@@ -1,7 +1,8 @@
 import React , {Fragment,useState} from 'react';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import {Link, useNavigate} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom";
+import { API } from '../../Constants';
 
 export default function Signup() {
     const [email, setEmail] = useState("");
@@ -29,7 +30,7 @@ export default function Signup() {
     
      
       
-      let output = fetch(`http://localhost:8080/api/auth/signup`,options);
+      let output = fetch(`${API}/api/auth/signup`,options);
           output.then(res=>res.json())
                 .then(response=>{
                     // console.log("reaponse",response);

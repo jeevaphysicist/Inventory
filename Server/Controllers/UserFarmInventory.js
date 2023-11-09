@@ -4,7 +4,7 @@ const UserFarmInventory = require('../Models/UserFarmInventry');
 // User Create a Produced Inventory data
 exports.createUserFarmInventory = (req,res)=>{
     UserFarmInventory.create(req.body).then(result=>{
-        res.status(201).json({message:"Data Produced Inventory Created Succesfully"})
+        res.status(201).json({message:"Data farm Inventory Created Succesfully"})
  })
  .catch(err=>res.status(500).json({ error : err , message:"error in database" }));          
 } 

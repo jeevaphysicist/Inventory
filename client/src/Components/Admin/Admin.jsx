@@ -2,6 +2,7 @@ import React ,{Fragment , useState , useEffect} from 'react';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { API } from '../../Constants';
 import 'react-tabs/style/react-tabs.css';
 
 export default function Admin() {
@@ -29,7 +30,7 @@ export default function Admin() {
                              headers:{"Content-Type":"application/json"},
                              body:JSON.stringify(data)
                  };
-                 fetch(`http://localhost:8080/api/Producedinventory/create-produced-inventory`,options)
+                 fetch(`${API}/api/Producedinventory/create-produced-inventory`,options)
                  .then(res=>res.json())
                  .then(result=>{
                             //  console.log("result",result);
@@ -48,7 +49,7 @@ export default function Admin() {
                          headers:{"Content-Type":"application/json"},
                          body:JSON.stringify(data)
              };
-             fetch(`http://localhost:8080/api/farminventory/create-farm-inventory`,options)
+             fetch(`${API}/api/farminventory/create-farm-inventory`,options)
              .then(res=>res.json())
              .then(result=>{
                     //  console.log("result",result);
@@ -57,7 +58,7 @@ export default function Admin() {
   }
 
   const GetProducedDataHandler = ()=>{
-         fetch(`http://localhost:8080/api/Producedinventory/get-produced-data`,{method:'GET'})
+         fetch(`${API}/api/Producedinventory/get-produced-data`,{method:'GET'})
          .then(res=>res.json())
          .then(result=>{
           //  console.log("result",result);
@@ -66,7 +67,7 @@ export default function Admin() {
   }
 
   const GetFarmDataHandler = ()=>{
-    fetch(`http://localhost:8080/api/farminventory/get-farm-data`,{method:'GET'})
+    fetch(`${API}/api/farminventory/get-farm-data`,{method:'GET'})
     .then(res=>res.json())
     .then(result=>{
       // console.log("result",result);
@@ -87,6 +88,7 @@ export default function Admin() {
     <TabPanel>
       <h2>Produce Inventory</h2>
 
+  <div className='mx-3 card py-3 px-3'>
       <Tabs>
     <TabList>
        <Tab>Inventory</Tab>
@@ -107,7 +109,7 @@ export default function Admin() {
   </thead>
   <tbody>
   {Produced.length > 0 && Produced.map(items=><tr key={items._id}>
-      <td>{items._id}</td>
+      <td>{items.ProductID}</td>
       <td >{items.ProductName}</td>
       <td>{items.QuantityType}</td>      
     </tr>
@@ -145,11 +147,12 @@ export default function Admin() {
       </div>
     </TabPanel>
   </Tabs>
+  </div>
 
     </TabPanel>
     <TabPanel>
       <h2>Fram Inventory</h2>
-
+      <div className=' mx-3 card py-3 px-3'>
     <Tabs>
     <TabList>
      
@@ -169,7 +172,7 @@ export default function Admin() {
   </thead>
   <tbody>
   {Farm.length > 0 && Farm.map(items=><tr key={items._id}>
-      <td>{items._id}</td>
+      <td>{items.ProductID}</td>
       <td >{items.ProductName}</td>
       <td>{items.QuantityType}</td>      
     </tr>
@@ -204,6 +207,7 @@ export default function Admin() {
       </div>
     </TabPanel>
   </Tabs>
+  </div>
 
     </TabPanel>
   </Tabs>   

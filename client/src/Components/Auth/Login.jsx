@@ -3,13 +3,28 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
+import { API } from '../../Constants';
+
 
 export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    // Const [role,SetRole] = useState('');
+    const [email, setEmail] = useState("user@gmail.com");
+    const [password, setPassword] = useState("2001");
+    const [role,SetRole] = useState('User');
     const [error,setError] = useState("");
     const [loading,setLoading] = useState(false);
+
+    const handleLogin = (e)=>{
+             if(e.target.value === "User"){
+               setEmail('user@gmail.com');
+               setPassword('2001');
+               SetRole('User');
+             }
+             else{
+              setEmail('admin@gmail.com');
+              setPassword('2001');
+              SetRole('Admin');
+             }
+    }
 
     const handleSubmit = (event) => {
         setLoading(true);
@@ -23,7 +38,7 @@ export default function Login() {
                     headers:{"Content-Type":"application/json"},
                     body:JSON.stringify(data)
                    }
-      let output = fetch(`http://localhost:8080/api/auth/login`,options);
+      let output = fetch(`${API}/api/auth/login`,options);
           output.then(res=>res.json())
                 .then(response=>{
                   // console.log("reaponse",response);
@@ -64,21 +79,21 @@ export default function Login() {
                     
                <div class="input-group mb-3">
                   <span className="input-group-text" id="basic-addon1"><i className='bi bi-person-fill'></i></span>
-                   <input type="email" class="form-control" placeholder="Email" required aria-label="Username" aria-describedby="basic-addon1" onChange={e=>setEmail(e.target.value)}/>
+                   <input type="email" value={email} class="form-control" placeholder="Email" required aria-label="Username" aria-describedby="basic-addon1" onChange={e=>setEmail(e.target.value)}/>
                </div>
                <div class="input-group mb-3">
                   <span className="input-group-text" id="basic-addon1"><i className='bi bi-eye-fill'></i></span>
-                   <input type="password" class="form-control" placeholder="Password" required aria-label="Username" aria-describedby="basic-addon1" onChange={e=>setPassword(e.target.value)}/>
+                   <input type="password" value={password} class="form-control" placeholder="Password" required aria-label="Username" aria-describedby="basic-addon1" onChange={e=>setPassword(e.target.value)}/>
                </div>
-               {/* <div class="input-group mb-3">
+               <div class="input-group mb-3">
   <label class="input-group-text" for="inputGroupSelect01">Role</label>
-  <select class="form-select" id="inputGroupSelect01">
+  <select value={role} class="form-select" id="inputGroupSelect01" onChange={handleLogin}>
     <option selected>Choose...</option>
     <option value="Admin">Admin</option>
     <option value="User">User</option>
    
   </select>
-</div> */}
+</div>
                <div class="input-group mb-3">
                   <button className="btn btn-block btn-warning" type="submit">Login</button>
                </div>

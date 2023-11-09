@@ -5,6 +5,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode'; 
+import { API } from '../../Constants';
 
 let responsePayload ;
 export default function Home() {
@@ -38,7 +39,7 @@ export default function Home() {
   },[])
 
   const GetProducedDataHandler = ()=>{
-    fetch(`http://localhost:8080/api/Producedinventory/get-produced-data`,{method:'GET'})
+    fetch(`${API}/api/Producedinventory/get-produced-data`,{method:'GET'})
     .then(res=>res.json())
     .then(result=>{
      //  console.log("result",result);
@@ -47,7 +48,7 @@ export default function Home() {
 }
 
 const GetFarmDataHandler = ()=>{
-fetch(`http://localhost:8080/api/farminventory/get-farm-data`,{method:'GET'})
+fetch(`${API}/api/farminventory/get-farm-data`,{method:'GET'})
 .then(res=>res.json())
 .then(result=>{
  // console.log("result",result);
@@ -116,7 +117,7 @@ const DispatchHandler = ()=>{
    headers:{"Content-Type":"application/json"},
    body:JSON.stringify(data)
 };
-fetch(`http://localhost:8080/api/userproducedinventory/update-produced-inventory`,options)
+fetch(`${API}/api/userproducedinventory/update-produced-inventory`,options)
 .then(res=>res.json())
 .then(result=>{
    console.log("result",result);
@@ -135,7 +136,7 @@ const FarmDispatchHandler = (e)=>{
    headers:{"Content-Type":"application/json"},
    body:JSON.stringify(data)
 };
-fetch(`http://localhost:8080/api/userfarminventory/update-farm-inventory`,options)
+fetch(`${API}/api/userfarminventory/update-farm-inventory`,options)
 .then(res=>res.json())
 .then(result=>{
    console.log("result",result);
@@ -149,14 +150,15 @@ const UserProducedProductAddHandler =(e)=>{
             UserID:user.id,
             ProductName:productforProduced.ProductName,
             QuantityType:productforProduced.QuantityType,
-            Quantity:quantityforProduced
+            Quantity:quantityforProduced,
+            ProductID:productforProduced.ProductID
        }
        let options ={
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify(data)
 };
-fetch(`http://localhost:8080/api/userproducedinventory/create-produced-inventory`,options)
+fetch(`${API}/api/userproducedinventory/create-produced-inventory`,options)
 .then(res=>res.json())
 .then(result=>{
         console.log("result",result);
@@ -170,14 +172,15 @@ const UserFarmProductAddHandler =(e)=>{
        UserID:user.id,
        ProductName:productforFarm.ProductName,
        QuantityType:productforFarm.QuantityType,
-       Quantity:quantityforFarm
+       Quantity:quantityforFarm,
+       ProductID:productforFarm.ProductID
   }
   let options ={
    method:"POST",
    headers:{"Content-Type":"application/json"},
    body:JSON.stringify(data)
 };
-fetch(`http://localhost:8080/api/userfarminventory/create-farm-inventory`,options)
+fetch(`${API}/api/userfarminventory/create-farm-inventory`,options)
 .then(res=>res.json())
 .then(result=>{
    console.log("result",result);
@@ -185,7 +188,7 @@ fetch(`http://localhost:8080/api/userfarminventory/create-farm-inventory`,option
 }
 
 const GetUserProducedDataHandler = ()=>{
-  fetch(`http://localhost:8080/api/userproducedinventory/get-produced-data/${user.id}`,{method:'GET'})
+  fetch(`${API}/api/userproducedinventory/get-produced-data/${user.id}`,{method:'GET'})
   .then(res=>res.json())
   .then(result=>{
    //  console.log("result",result);
@@ -194,7 +197,7 @@ const GetUserProducedDataHandler = ()=>{
 }
 
 const GetUserFarmDataHandler = ()=>{
-fetch(`http://localhost:8080/api/userfarminventory/get-farm-data/${user.id}`,{method:'GET'})
+fetch(`${API}/api/userfarminventory/get-farm-data/${user.id}`,{method:'GET'})
 .then(res=>res.json())
 .then(result=>{
 // console.log("result",result);
@@ -216,7 +219,7 @@ setUserfarmInventory(result.data);
 
     <TabPanel>
       <h2>Produce Inventory</h2>
-
+  <div className="mx-5 py-3 px-3card">
       <Tabs>
     <TabList>
        <Tab>Dispatch</Tab>
@@ -234,7 +237,7 @@ setUserfarmInventory(result.data);
                     <div className='my-2'>Products</div>
                     <select style={{width:"100%",borderRadius:"7px"}} required onChange={ProducedSelecthandler}>
                     <option value="">-- Select a Product ---</option>
-                    {UserproducedInventory.length > 0 && UserproducedInventory.map(item=><option key={item._id} value={item._id}>{item.ProductName}</option>) }
+                    {UserproducedInventory.length > 0 && UserproducedInventory.map(item=><option key={item._id} value={item._id}>{item.ProductName} ({item.ProductID}) </option>) }
                     
                     
                 </select>
@@ -263,17 +266,24 @@ setUserfarmInventory(result.data);
                             <div className="col-12 my-2">
                               {
                                 producedinventory.length > 0 && producedinventory.map((item,index)=><div className="card p-2" style={{position:"relative"}}>
-                                <div className='my-2 text-start'>{item.ProductName}</div>
-                                <div className='my-2 text-start'>{item.Quantity}</div>
+                                <div className='my-2 text-start'>Product Name : {item.ProductName}</div>
+                                <div className='my-2 text-start'>Quantity : {item.Quantity}</div>
                                 <div  style={{position:"absolute",right:"10px",fontSize:"20px"}} onClick={e=>RemoveDispatchProducedHandler(index)}>x</div>
                                 </div>)
                               }
                                                                 
                             </div>
+                            {
+                              
+                                producedinventory.length > 0 && <>  <div className="col-5">
+                                <button className='btn btn-block btn-success' onClick={DispatchHandler}>Save</button>
+                                </div>
+                                <div className="col-7">
+                                <button className='btn btn-block btn-danger' onClick={e=>setProducedInventory([])}>All Clear</button>
+                                </div></>
+                            }
                            
-                            <div className="col-12">
-                            <button className='btn btn-block btn-success' onClick={DispatchHandler}>Save</button>
-                            </div>
+                          
                             
                           </div>
                      </div>
@@ -297,7 +307,7 @@ setUserfarmInventory(result.data);
     {
       UserproducedInventory.length > 0 && UserproducedInventory.map(item=> <tr key={item._id}>
       
-        <td>{item._id}</td>
+        <td>{item.ProductID}</td>
         <td>{item.ProductName}</td>
         <td>{item.Quantity} {item.QuantityType} </td>
       </tr>)
@@ -316,7 +326,7 @@ setUserfarmInventory(result.data);
               <select class="form-select" aria-label="Default select example" onChange={handleProductSelection} required>
                <option value="">--Select Product--</option>
                {
-                Produced.length >0 && Produced.map(items=><option key={items._id} value={items._id} >{items.ProductName}</option>)
+                Produced.length >0 && Produced.map(items=><option key={items._id} value={items._id} >{items.ProductName} ({items.ProductID})</option>)
                }
               
               
@@ -335,12 +345,13 @@ setUserfarmInventory(result.data);
       </div>
     </TabPanel>
   </Tabs>
+  </div>
 
     </TabPanel>
 
     <TabPanel>
       <h2>Fram Inventory</h2>
-
+<div className="mx-3 py-3 px-3 card">
     <Tabs>
     <TabList>
       <Tab>Use Inventory</Tab>
@@ -358,7 +369,7 @@ setUserfarmInventory(result.data);
                     <div className='my-2'>Products</div>
                     <select style={{width:"100%",borderRadius:"7px"}} required onChange={FarmSelecthandler}>
                     <option value="">-- Select a Product ---</option>
-                    {UserfarmInventory.length > 0 && UserfarmInventory.map(item=><option value={item._id}>{item.ProductName}</option> )}                  
+                    {UserfarmInventory.length > 0 && UserfarmInventory.map(item=><option value={item._id}>{item.ProductName} ({item.ProductID}) </option> )}                  
                     </select>
                     </div>
                     
@@ -426,7 +437,7 @@ setUserfarmInventory(result.data);
   </thead>
   <tbody>
     {UserfarmInventory.length > 0 && UserfarmInventory.map(item=><tr key={item._id}>      
-      <td>{item._id}</td>
+      <td>{item.ProductID}</td>
       <td>{item.ProductName}</td>
       <td>{item.Quantity}</td>
       <td>{item.QuantityType}</td>
@@ -444,7 +455,7 @@ setUserfarmInventory(result.data);
               <select class="form-select" aria-label="Default select example" required onChange={handleFarmSelection}>
                <option  value=''>--Select Product--</option>
                {
-                Farm.length >0 && Farm.map(items=><option key={items._id} value={items._id} >{items.ProductName}</option>)
+                Farm.length >0 && Farm.map(items=><option key={items._id} value={items._id} >{items.ProductName} ({items.ProductID})</option>)
                }
               
                
@@ -463,6 +474,7 @@ setUserfarmInventory(result.data);
       </div>
     </TabPanel>
   </Tabs>
+  </div>
 
     </TabPanel>
   </Tabs>   
