@@ -81,12 +81,12 @@ export default function Admin() {
          <main className='my-3' style={{minHeight:"82.98vh"}}>
          <Tabs>
     <TabList>
-      <Tab>Produce Inventory</Tab>
-      <Tab>Fram Inventory</Tab>
+      <Tab>Produced Inventory</Tab>
+      <Tab>Farm Inventory</Tab>
     </TabList>
 
     <TabPanel>
-      <h2>Produce Inventory</h2>
+      <h2>Produced Inventory</h2>
 
   <div className='mx-3 card py-3 px-3'>
       <Tabs>
@@ -151,7 +151,7 @@ export default function Admin() {
 
     </TabPanel>
     <TabPanel>
-      <h2>Fram Inventory</h2>
+      <h2>Farm Inventory</h2>
       <div className=' mx-3 card py-3 px-3'>
     <Tabs>
     <TabList>

@@ -10,11 +10,11 @@ const FarmInventoryRoutes = require('./routes/FarmInventory');
 const ProducedInventoryRoutes = require('./routes/ProducedInventory');
 const UserFarmInventoryRoutes = require('./routes/UserFarmInventory');
 const UserProducedInventoryRoutes = require('./routes/UserProducedInventory');
-
+ 
   
 const app = express(); 
 const PORT = process.env.PORT || 8080 ;
-const allowedOrigins = ['http://localhost:3000'];
+const allowedOrigins = ['http://localhost:3000','https://inventory-h9o9.onrender.com'];
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json({limit:"50mb"}));
@@ -35,6 +35,10 @@ mongoose.connection.on("connected", () => {
 mongoose.connection.on("disconnected", () => {
   console.log("mongodb disconnected");
 });
+
+app.get('/',(req,res)=>{
+  res.status(200).json({ message : 'Server Running Successfully' });
+})
  
 
 // API Paths

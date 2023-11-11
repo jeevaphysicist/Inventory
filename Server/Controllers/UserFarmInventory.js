@@ -2,12 +2,49 @@ const UserFarmInventory = require('../Models/UserFarmInventry');
 
 
 // User Create a Produced Inventory data
-exports.createUserFarmInventory = (req,res)=>{
-    UserFarmInventory.create(req.body).then(result=>{
-        res.status(201).json({message:"Data farm Inventory Created Succesfully"})
- })
- .catch(err=>res.status(500).json({ error : err , message:"error in database" }));          
-} 
+exports.createUserFarmInventory = async (req, res) => {
+  try {
+    // console.log('req.body', req.body);
+    const quantity = parseInt(req.body.Quantity, 10);
+
+    // Find the product in the database based on ProductID
+    let product = await UserFarmInventory.findOne({ ProductID: req.body.ProductID });
+
+    // console.log('product', product);
+
+    if (!product) {
+      // If the product is not found, create a new document
+
+      let data = {
+        ProductID: req.body.ProductID,
+        ProductName: req.body.ProductName,
+        QuantityType: req.body.QuantityType,
+        Quantity: quantity,
+        UserID: req.body.UserID,
+      };
+
+      UserFarmInventory.create(data)
+        .then((result) => {
+          res.status(201).json({ message: 'Data Farm Inventory Created Successfully' });
+        })
+        .catch((err) => {
+          res.status(500).json({ error: err, message: 'Error in database' });
+        });
+    } else {
+      // If the product is found, update the quantity
+      product.Quantity = product.Quantity + quantity;
+
+      // Save the updated product
+      await product.save();
+
+      return res.status(200).json({ message: 'Quantity updated successfully' });
+    }
+  } catch (err) {
+    // Handle any unexpected errors
+    res.status(500).json({ error: err, message: 'Internal server Error' });
+  }
+};
+
 
 
 // Get  a Produced Inventory

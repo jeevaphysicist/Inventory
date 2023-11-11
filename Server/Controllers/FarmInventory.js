@@ -2,7 +2,7 @@ const FarmInventory = require('../Models/FarmInventory');
 
 // Function to generate a random alphanumeric string with 4 digits
 function generateShortId() {
-       const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+       const characters = '0123456789';
        let shortId = '';
      
        for (let i = 0; i < 4; i++) {
@@ -15,7 +15,7 @@ function generateShortId() {
 
 // Admin create a FarmInventory Data
 exports.createFarmInventory = (req,res)=>{
-       
+        
        // Generate a unique four-digit short ID
        const uniqueShortId = generateShortId();
        let data ={

@@ -14,7 +14,7 @@ export default function Home() {
     responsePayload = jwtDecode(token);
     
   } 
-  const [user,setUser] = useState(responsePayload || false)
+  const [user,setUser] = useState(responsePayload || false);
   const [Produced,setProduced] = useState([]);
   const [Farm,setFarm] = useState([]);
   const [productforProduced,setProductforProduced] = useState('');
@@ -213,12 +213,12 @@ setUserfarmInventory(result.data);
          <main className='my-3' style={{minHeight:"82.98vh"}}>
          <Tabs>
     <TabList>
-      <Tab>Produce Inventory</Tab>
-      <Tab>Fram Inventory</Tab>
+      <Tab>Produced Inventory</Tab>
+      <Tab>Farm Inventory</Tab>
     </TabList>
 
     <TabPanel>
-      <h2>Produce Inventory</h2>
+      <h2>Produced Inventory</h2>
   <div className="mx-5 py-3 px-3card">
       <Tabs>
     <TabList>
@@ -350,7 +350,7 @@ setUserfarmInventory(result.data);
     </TabPanel>
 
     <TabPanel>
-      <h2>Fram Inventory</h2>
+      <h2>Farm Inventory</h2>
 <div className="mx-3 py-3 px-3 card">
     <Tabs>
     <TabList>

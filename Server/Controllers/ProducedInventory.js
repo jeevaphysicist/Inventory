@@ -2,7 +2,7 @@ const ProducedInventory = require('../Models/ProducedInventory');
 
 // Function to generate a random alphanumeric string with 4 digits
 function generateShortId() {
-    const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    const characters = '0123456789';
     let shortId = '';
   
     for (let i = 0; i < 4; i++) {
